@@ -21,7 +21,7 @@ namespace MedTechC
 
             builder.Services.AddDbContext<MedTechDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("MedTechDbContext"));
+                options.UseInMemoryDatabase("Database");
             });
 
             builder.Services.AddScoped<IPacienteRepositorie, PacienteRepositorie>();
