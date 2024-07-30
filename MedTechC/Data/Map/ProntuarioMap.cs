@@ -11,6 +11,9 @@ namespace MedTechC.Data.Map
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Paciente).IsRequired();
+            builder.HasOne(x => x.Paciente)
+                .WithMany()
+                .HasForeignKey(x => x.PacienteId);
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.Peso).HasMaxLength(10);
             builder.Property(x => x.Altura).HasMaxLength(10);

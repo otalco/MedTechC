@@ -2,7 +2,7 @@
 
 namespace MedTechC.Repositories.Interfaces
 {
-    public interface IPacienteRepositorie
+    public interface IPacienteRepository
     {
         Task<List<PacienteModel>> BuscarTodosPacientes();
         Task<PacienteModel> BuscarPacientePorId(int id);

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MedTechC.Repositories
 {
-    public class PacienteRepositorie : IPacienteRepositorie
+    public class PacienteRepository : IPacienteRepository
     {
         private readonly MedTechDbContext _dbContext;
 
-        public PacienteRepositorie(MedTechDbContext medTechDbContext)
+        public PacienteRepository(MedTechDbContext medTechDbContext)
         {
             _dbContext = medTechDbContext;
         }
@@ -25,7 +25,13 @@ namespace MedTechC.Repositories
         }
 
         public async Task<PacienteModel> AdicionarPaciente(PacienteModel paciente)
-        {
+        { 
+            if (paciente.Id == 0)
+            {
+                var maxId = await _dbContext.Pacientes.MaxAsync(p => (int?)p.Id) ?? 0;
+                paciente.Id = maxId + 1;
+            }
+
             await _dbContext.Pacientes.AddAsync(paciente);
             await _dbContext.SaveChangesAsync();
             return paciente;

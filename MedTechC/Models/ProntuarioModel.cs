@@ -7,6 +7,8 @@ namespace MedTechC.Models
     {
         public int Id { get; set; } 
 
+        public int PacienteId { get; set; }
+
         public PacienteModel Paciente { get; set; }
 
         public StatusProntuario Status { get; set; }

@@ -16,7 +16,7 @@ namespace MedTechC.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new Map.PacienteMap());
-            //modelBuilder.ApplyConfiguration(new Map.ProntuarioMap());
+            modelBuilder.ApplyConfiguration(new Map.ProntuarioMap());
             base.OnModelCreating(modelBuilder);
         }
 

@@ -8,9 +8,9 @@ namespace MedTechC.Controllers
     [ApiController]
     public class PacienteController : ControllerBase
     {
-        private readonly IPacienteRepositorie _pacienteRepositorie;
+        private readonly IPacienteRepository _pacienteRepositorie;
 
-        public PacienteController(IPacienteRepositorie pacienteRepositorie)
+        public PacienteController(IPacienteRepository pacienteRepositorie)
         {
             _pacienteRepositorie = pacienteRepositorie;
         }
