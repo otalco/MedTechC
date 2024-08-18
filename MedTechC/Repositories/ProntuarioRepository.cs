@@ -16,23 +16,24 @@ namespace MedTechC.Repositories
 
         public async Task<IEnumerable<ProntuarioModel>> GetAllProntuariosAsync()
         {
-            return await _dbContext.Prontuarios.Include(p => p.Paciente).ToListAsync();
+            return await _dbContext.Prontuarios.ToListAsync();
         }
 
         public async Task<ProntuarioModel> GetProntuarioByIdAsync(int id)
         {
-            return await _dbContext.Prontuarios.Include(p => p.Paciente).FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbContext.Prontuarios.FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<ProntuarioModel>> GetProntuariosByPacienteIdAsync(int pacienteId)
         {
-            return await _dbContext.Prontuarios.Include(p => p.Paciente).Where(p => p.PacienteId == pacienteId).ToListAsync();
+            return await _dbContext.Prontuarios.Where(p => p.PacienteId == pacienteId).ToListAsync();
         }
 
         public async Task<IEnumerable<ProntuarioModel>> GetProntuariosByPacienteNomeAsync(string nome)
         {
-            return await _dbContext.Prontuarios.Include(p => p.Paciente)
-                .Where(p => p.Paciente.Nome.Contains(nome)).ToListAsync();
+            return await _dbContext.Prontuarios
+                .Where(p => _dbContext.Pacientes.Any(pa => pa.Id == p.PacienteId && pa.Nome.Contains(nome)))
+                .ToListAsync();
         }
 
         public async Task<ProntuarioModel> AddProntuarioAsync(ProntuarioModel prontuario)
@@ -66,7 +67,7 @@ namespace MedTechC.Repositories
         {
             return await _dbContext.Prontuarios
                 .OrderBy(p => p.Status) // Assuming lower value means higher priority
-                .ThenBy(p => p.dataAtendimento) // In case of same priority, order by date
+                .ThenBy(p => p.DataAtendimento) // In case of same priority, order by date
                 .FirstOrDefaultAsync();
         }
     }

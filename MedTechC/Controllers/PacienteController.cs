@@ -8,46 +8,63 @@ namespace MedTechC.Controllers
     [ApiController]
     public class PacienteController : ControllerBase
     {
-        private readonly IPacienteRepository _pacienteRepositorie;
+        private readonly IPacienteRepository _pacienteRepository;
 
-        public PacienteController(IPacienteRepository pacienteRepositorie)
+        public PacienteController(IPacienteRepository pacienteRepository)
         {
-            _pacienteRepositorie = pacienteRepositorie;
+            _pacienteRepository = pacienteRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PacienteModel>>> RetornaTodosOsPaciente()
+        public async Task<ActionResult<List<PacienteModel>>> RetornaTodosOsPacientes()
         {
-            List<PacienteModel> paciente = await _pacienteRepositorie.BuscarTodosPacientes();
-            return Ok(paciente);
+            List<PacienteModel> pacientes = await _pacienteRepository.BuscarTodosPacientes();
+            return Ok(pacientes);
         }
 
         [HttpGet("{pacienteId}")]
-        public async Task<ActionResult<PacienteModel>> RetornaTodosOsPaciente(int pacienteId)
+        public async Task<ActionResult<PacienteModel>> RetornaPacientePorId(int pacienteId)
         {
-            PacienteModel paciente = await _pacienteRepositorie.BuscarPacientePorId(pacienteId);
+            PacienteModel paciente = await _pacienteRepository.BuscarPacientePorId(pacienteId);
+            if (paciente == null)
+            {
+                return NotFound();
+            }
             return Ok(paciente);
         }
 
         [HttpPost]
         public async Task<ActionResult<PacienteModel>> CadastrarPaciente([FromBody] PacienteModel paciente)
         {
-            PacienteModel pacienteAdicionado = await _pacienteRepositorie.AdicionarPaciente(paciente);
-            return Ok(pacienteAdicionado);
+            paciente.Id = 0;
+            PacienteModel pacienteAdicionado = await _pacienteRepository.AdicionarPaciente(paciente);
+            return CreatedAtAction(nameof(RetornaPacientePorId), new { pacienteId = pacienteAdicionado.Id }, pacienteAdicionado);
         }
 
         [HttpPut("{pacienteId}")]
-        public async Task<ActionResult<PacienteModel>> AtualizarPaciente([FromBody] PacienteModel paciente,
-            int pacienteId)
+        public async Task<ActionResult<PacienteModel>> AtualizarPaciente([FromBody] PacienteModel paciente, int pacienteId)
         {
-            PacienteModel pacienteAtualizado = await _pacienteRepositorie.AtualizarPaciente(paciente, pacienteId);
+            if (pacienteId != paciente.Id)
+            {
+                return BadRequest("ID do paciente não corresponde ao ID na URL.");
+            }
+
+            PacienteModel pacienteAtualizado = await _pacienteRepository.AtualizarPaciente(paciente, pacienteId);
+            if (pacienteAtualizado == null)
+            {
+                return NotFound();
+            }
             return Ok(pacienteAtualizado);
         }
 
         [HttpDelete("{pacienteId}")]
         public async Task<ActionResult<bool>> ExcluirPaciente(int pacienteId)
         {
-            bool pacienteExcluido = await _pacienteRepositorie.ExcluirPaciente(pacienteId);
+            bool pacienteExcluido = await _pacienteRepository.ExcluirPaciente(pacienteId);
+            if (!pacienteExcluido)
+            {
+                return NotFound();
+            }
             return Ok(pacienteExcluido);
         }
     }

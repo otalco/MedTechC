@@ -1,28 +1,29 @@
-﻿using MedTechC.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MedTechC.Models;
 
 namespace MedTechC.Data.Map
 {
     public class ProntuarioMap : IEntityTypeConfiguration<ProntuarioModel>
     {
-
         public void Configure(EntityTypeBuilder<ProntuarioModel> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Paciente).IsRequired();
-            builder.HasOne(x => x.Paciente)
-                .WithMany()
-                .HasForeignKey(x => x.PacienteId);
-            builder.Property(x => x.Status).IsRequired();
-            builder.Property(x => x.Peso).HasMaxLength(10);
-            builder.Property(x => x.Altura).HasMaxLength(10);
-            builder.Property(x => x.PressaoArterial).HasMaxLength(10);
-            builder.Property(x => x.Temperatura).HasMaxLength(10);
-            builder.Property(x => x.Saturacao).HasMaxLength(10);
-            builder.Property(x => x.FrequenciaCardiaca).HasMaxLength(10);
-            builder.Property(x => x.QueixaPrincipal).HasMaxLength(255);
-            builder.Property(x => x.dataAtendimento).IsRequired();
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.PacienteId).IsRequired();
+            builder.Property(p => p.Status).IsRequired();
+            builder.Property(p => p.Peso).IsRequired();
+            builder.Property(p => p.Altura).IsRequired();
+            builder.Property(p => p.PressaoArterial).IsRequired();
+            builder.Property(p => p.Temperatura).IsRequired();
+            builder.Property(p => p.Saturacao).IsRequired();
+            builder.Property(p => p.FrequenciaCardiaca).IsRequired();
+            builder.Property(p => p.QueixaPrincipal).IsRequired();
+            builder.Property(p => p.DataAtendimento).IsRequired();
+
+            // Remova ou ajuste qualquer mapeamento relacionado ao objeto Paciente
+            // builder.HasOne(p => p.Paciente)
+            //        .WithMany()
+            //        .HasForeignKey(p => p.PacienteId);
         }
     }
 }

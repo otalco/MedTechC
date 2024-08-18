@@ -25,12 +25,9 @@ namespace MedTechC.Repositories
         }
 
         public async Task<PacienteModel> AdicionarPaciente(PacienteModel paciente)
-        { 
-            if (paciente.Id == 0)
-            {
-                var maxId = await _dbContext.Pacientes.MaxAsync(p => (int?)p.Id) ?? 0;
-                paciente.Id = maxId + 1;
-            }
+        {
+            // Certifique-se de que o Id não seja definido explicitamente
+            paciente.Id = 0;
 
             await _dbContext.Pacientes.AddAsync(paciente);
             await _dbContext.SaveChangesAsync();

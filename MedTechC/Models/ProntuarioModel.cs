@@ -8,9 +8,7 @@ namespace MedTechC.Models
         public int Id { get; set; } 
 
         public int PacienteId { get; set; }
-
-        public PacienteModel Paciente { get; set; }
-
+        
         public StatusProntuario Status { get; set; }
 
         public String? Peso { get; set; }
@@ -27,6 +25,6 @@ namespace MedTechC.Models
 
         public String? QueixaPrincipal { get; set; }
 
-        public DateTime dataAtendimento { get; set; }
+        public DateTime DataAtendimento { get; set; }
     }
 }

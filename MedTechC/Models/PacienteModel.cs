@@ -1,7 +1,12 @@
-﻿namespace MedTechC.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MedTechC.Models
 {
     public class PacienteModel
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public String Nome { get; set; }
