@@ -10,13 +10,13 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddDbContext<MedTechDbContext>(options => { options.UseInMemoryDatabase("Database"); });
+        // Configure DbContext to use SQL Server
+        builder.Services.AddDbContext<MedTechDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
         builder.Services.AddScoped<IProntuarioRepository, ProntuarioRepository>();
@@ -24,12 +24,12 @@ public class Program
         // Add CORS service
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowSpecificOrigin",
+            options.AddPolicy("AllowAll",
                 builder => builder
-                    .WithOrigins("http://127.0.0.1:5500/")
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader());
-        }); 
+        });
 
         var app = builder.Build();
 
@@ -43,7 +43,7 @@ public class Program
         app.UseHttpsRedirection();
 
         // Use CORS middleware
-        app.UseCors("AllowSpecificOrigin");
+        app.UseCors("AllowAll");
 
         app.UseAuthorization();
 
