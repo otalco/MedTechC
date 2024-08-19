@@ -12,11 +12,13 @@ namespace MedTechC.Data
 
         public DbSet<PacienteModel> Pacientes { get; set; }
         public DbSet<ProntuarioModel> Prontuarios { get; set; }
+        public DbSet<CondutaModel> Condutas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new Map.PacienteMap());
             modelBuilder.ApplyConfiguration(new Map.ProntuarioMap());
+            modelBuilder.ApplyConfiguration(new CondutaMap());
             base.OnModelCreating(modelBuilder);
         }
 

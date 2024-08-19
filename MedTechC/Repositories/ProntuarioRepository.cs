@@ -66,8 +66,8 @@ namespace MedTechC.Repositories
         public async Task<ProntuarioModel> GetNextProntuarioAsync()
         {
             return await _dbContext.Prontuarios
-                .OrderBy(p => p.Status) // Assuming lower value means higher priority
-                .ThenBy(p => p.DataAtendimento) // In case of same priority, order by date
+                .OrderBy(p => p.Status)
+                .ThenBy(p => p.DataAtendimento)
                 .FirstOrDefaultAsync();
         }
     }

@@ -20,6 +20,7 @@ public class Program
 
         builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
         builder.Services.AddScoped<IProntuarioRepository, ProntuarioRepository>();
+        builder.Services.AddScoped<ICondutaRepository, CondutaRepository>();
 
         // Add CORS service
         builder.Services.AddCors(options =>
