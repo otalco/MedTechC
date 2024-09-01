@@ -19,11 +19,6 @@ namespace MedTechC.Data.Map
             builder.Property(p => p.FrequenciaCardiaca).IsRequired();
             builder.Property(p => p.QueixaPrincipal).IsRequired();
             builder.Property(p => p.DataAtendimento).IsRequired();
-
-            // Remova ou ajuste qualquer mapeamento relacionado ao objeto Paciente
-            // builder.HasOne(p => p.Paciente)
-            //        .WithMany()
-            //        .HasForeignKey(p => p.PacienteId);
         }
     }
 }

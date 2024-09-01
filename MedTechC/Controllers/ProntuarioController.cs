@@ -9,10 +9,12 @@ namespace MedTechC.Controllers
     public class ProntuarioController : ControllerBase
     {
         private readonly IProntuarioRepository _prontuarioRepository;
+        private readonly IPacienteRepository _pacienteRepository;
 
-        public ProntuarioController(IProntuarioRepository prontuarioRepository)
+        public ProntuarioController(IProntuarioRepository prontuarioRepository, IPacienteRepository pacienteRepository)
         {
             _prontuarioRepository = prontuarioRepository;
+            _pacienteRepository = pacienteRepository;
         }
 
         [HttpGet]
@@ -90,7 +92,22 @@ namespace MedTechC.Controllers
             {
                 return NotFound();
             }
-            return Ok(prontuario);
+
+            var paciente = await _pacienteRepository.BuscarPacientePorId(prontuario.PacienteId);
+            if (paciente == null)
+            {
+                return NotFound();
+            }
+
+            var result = new
+            {
+                prontuario.Id,
+                prontuario.Urgencia,
+                prontuario.Status,
+                NomePaciente = paciente.Nome
+            };
+
+            return Ok(result);
         }
-    }
+    }   
 }
