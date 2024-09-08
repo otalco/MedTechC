@@ -1,4 +1,5 @@
 ﻿using MedTechC.Data;
+using MedTechC.Enums;
 using MedTechC.Models;
 using MedTechC.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -62,14 +63,22 @@ namespace MedTechC.Repositories
             await _dbContext.SaveChangesAsync();
             return true;
         }
-
         public async Task<ProntuarioModel> GetNextProntuarioAsync()
         {
             return await _dbContext.Prontuarios
-                .OrderBy(p => p.Status)
-                .ThenBy(p => p.DataAtendimento)
+                .Where(p => p.Status == StatusProntuario.Aberto)
+                .OrderBy(p => p.DataAtendimento)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<int?> GetPacienteIdByProntuarioIdAsync(int prontuarioId)
+        {
+            return await _dbContext.Prontuarios
+                .Where(p => p.Id == prontuarioId)
+                .Select(p => (int?)p.PacienteId)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<bool> HasProntuarios(int pacienteId)
         {
             return await _dbContext.Prontuarios.AnyAsync(p => p.PacienteId == pacienteId);

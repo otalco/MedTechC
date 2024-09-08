@@ -87,18 +87,37 @@ namespace MedTechC.Controllers
         [HttpGet("next")]
         public async Task<IActionResult> GetNextProntuario()
         {
+            // Obtenha o próximo prontuário
             var prontuario = await _prontuarioRepository.GetNextProntuarioAsync();
             if (prontuario == null)
             {
+                Console.WriteLine("No prontuario found with Status.Aberto");
                 return NotFound();
             }
 
-            var paciente = await _pacienteRepository.BuscarPacientePorId(prontuario.PacienteId);
+            Console.WriteLine($"Prontuario found: {prontuario.Id}");
+
+            // Obtenha o ID do paciente associado ao prontuário
+            var pacienteId = await _prontuarioRepository.GetPacienteIdByProntuarioIdAsync(prontuario.Id);
+            if (pacienteId == null)
+            {
+                Console.WriteLine($"No pacienteId found for ProntuarioId: {prontuario.Id}");
+                return NotFound();
+            }
+
+            Console.WriteLine($"PacienteId found: {pacienteId}");
+
+            // Obtenha o paciente associado ao ID
+            var paciente = await _pacienteRepository.BuscarPacientePorId(pacienteId.Value);
             if (paciente == null)
             {
+                Console.WriteLine($"No paciente found for PacienteId: {pacienteId}");
                 return NotFound();
             }
 
+            Console.WriteLine($"Paciente found: {paciente.Id}, Nome: {paciente.Nome}");
+
+            // Crie o resultado a ser retornado
             var result = new
             {
                 prontuario.Id,
@@ -107,6 +126,7 @@ namespace MedTechC.Controllers
                 NomePaciente = paciente.Nome
             };
 
+            // Retorne o resultado
             return Ok(result);
         }
     }   

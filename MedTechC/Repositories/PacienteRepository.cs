@@ -19,9 +19,10 @@ namespace MedTechC.Repositories
             return await _dbContext.Pacientes.ToListAsync();
         }
 
-        public async Task<PacienteModel> BuscarPacientePorId(int id)
+        public async Task<PacienteModel> BuscarPacientePorId(int pacienteId)
         {
-            return await _dbContext.Pacientes.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Pacientes
+                .FirstOrDefaultAsync(p => p.Id == pacienteId);
         }
 
         public async Task<PacienteModel> AdicionarPaciente(PacienteModel paciente)
