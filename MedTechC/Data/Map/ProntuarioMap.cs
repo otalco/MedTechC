@@ -11,6 +11,7 @@ namespace MedTechC.Data.Map
             builder.HasKey(p => p.Id);
             builder.Property(p => p.PacienteId).IsRequired();
             builder.Property(p => p.Status).IsRequired();
+            builder.Property(p => p.Urgencia).IsRequired();
             builder.Property(p => p.Peso).IsRequired();
             builder.Property(p => p.Altura).IsRequired();
             builder.Property(p => p.PressaoArterial).IsRequired();

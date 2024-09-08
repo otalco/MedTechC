@@ -12,5 +12,6 @@ namespace MedTechC.Repositories.Interfaces
         Task<ProntuarioModel> UpdateProntuarioAsync(ProntuarioModel prontuario);
         Task<bool> DeleteProntuarioAsync(int id);
         Task<ProntuarioModel> GetNextProntuarioAsync();
+        Task<bool> HasProntuarios(int pacienteId);
     }
 }

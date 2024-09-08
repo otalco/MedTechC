@@ -1,4 +1,5 @@
 ﻿using MedTechC.Models;
+using MedTechC.Repositories;
 using MedTechC.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,14 @@ namespace MedTechC.Controllers
     public class PacienteController : ControllerBase
     {
         private readonly IPacienteRepository _pacienteRepository;
+        private readonly IProntuarioRepository _prontuarioRepository;
+        private readonly ICondutaRepository _condutaRepository;
 
-        public PacienteController(IPacienteRepository pacienteRepository)
+        public PacienteController(IPacienteRepository pacienteRepository, IProntuarioRepository prontuarioRepository, ICondutaRepository condutaRepository)
         {
             _pacienteRepository = pacienteRepository;
+            _prontuarioRepository = prontuarioRepository;
+            _condutaRepository = condutaRepository;
         }
 
         [HttpGet]
@@ -60,6 +65,14 @@ namespace MedTechC.Controllers
         [HttpDelete("{pacienteId}")]
         public async Task<ActionResult<bool>> ExcluirPaciente(int pacienteId)
         {
+            bool hasProntuarios = await _prontuarioRepository.HasProntuarios(pacienteId);
+            bool hasCondutas = await _condutaRepository.HasCondutas(pacienteId);
+
+            if (hasProntuarios || hasCondutas)
+            {
+                return BadRequest("Não é possível excluir o paciente pois existem prontuários ou condutas registrados.");
+            }
+
             bool pacienteExcluido = await _pacienteRepository.ExcluirPaciente(pacienteId);
             if (!pacienteExcluido)
             {

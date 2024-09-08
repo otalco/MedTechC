@@ -9,4 +9,5 @@ public interface ICondutaRepository
     Task<CondutaModel> AddCondutaAsync(CondutaModel conduta);
     Task<CondutaModel> UpdateCondutaAsync(CondutaModel conduta);
     Task<bool> DeleteCondutaAsync(int id);
+    Task<bool> HasCondutas(int pacienteId);
 }

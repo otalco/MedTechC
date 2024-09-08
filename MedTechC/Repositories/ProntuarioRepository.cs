@@ -70,6 +70,10 @@ namespace MedTechC.Repositories
                 .ThenBy(p => p.DataAtendimento)
                 .FirstOrDefaultAsync();
         }
+        public async Task<bool> HasProntuarios(int pacienteId)
+        {
+            return await _dbContext.Prontuarios.AnyAsync(p => p.PacienteId == pacienteId);
+        }
     }
 }
 

@@ -48,4 +48,8 @@ public class CondutaRepository : ICondutaRepository
         await _dbContext.SaveChangesAsync();
         return true;
     }
+    public async Task<bool> HasCondutas(int pacienteId)
+    {
+        return await _dbContext.Condutas.AnyAsync(c => c.PacienteId == pacienteId);
+    }
 }
