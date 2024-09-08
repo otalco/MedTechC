@@ -1,3 +1,4 @@
+using MedTechC.Enums;
 using MedTechC.Models;
 using MedTechC.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -129,5 +130,22 @@ namespace MedTechC.Controllers
             // Retorne o resultado
             return Ok(result);
         }
-    }   
+
+        [HttpPatch("status/{prontuarioId}")]
+        public async Task<IActionResult> UpdateProntuarioStatus(int prontuarioId, [FromBody] StatusProntuario novoStatus)
+        {
+            if (prontuarioId <= 0)
+            {
+                return BadRequest("Invalid prontuario ID.");
+            }
+
+            var result = await _prontuarioRepository.UpdateProntuarioStatusAsync(prontuarioId, novoStatus);
+            if (!result)
+            {
+                return NotFound("Prontuario not found.");
+            }
+
+            return NoContent();
+        }
+    }
 }

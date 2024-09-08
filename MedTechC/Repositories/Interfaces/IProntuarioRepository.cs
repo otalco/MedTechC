@@ -1,3 +1,4 @@
+using MedTechC.Enums;
 using MedTechC.Models;
 
 namespace MedTechC.Repositories.Interfaces
@@ -14,5 +15,6 @@ namespace MedTechC.Repositories.Interfaces
         Task<int?> GetPacienteIdByProntuarioIdAsync(int prontuarioId);
         Task<ProntuarioModel> GetNextProntuarioAsync();
         Task<bool> HasProntuarios(int pacienteId);
+        Task<bool> UpdateProntuarioStatusAsync(int prontuarioId, StatusProntuario novoStatus);
     }
 }

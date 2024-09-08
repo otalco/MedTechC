@@ -83,6 +83,20 @@ namespace MedTechC.Repositories
         {
             return await _dbContext.Prontuarios.AnyAsync(p => p.PacienteId == pacienteId);
         }
+
+        public async Task<bool> UpdateProntuarioStatusAsync(int prontuarioId, StatusProntuario novoStatus)
+        {
+            var prontuario = await _dbContext.Prontuarios.FindAsync(prontuarioId);
+            if (prontuario == null)
+            {
+                return false;
+            }
+
+            prontuario.Status = novoStatus;
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
     }
 }
 
