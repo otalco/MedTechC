@@ -41,8 +41,6 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection();
-
         // Use CORS middleware
         app.UseCors("AllowAll");
 
