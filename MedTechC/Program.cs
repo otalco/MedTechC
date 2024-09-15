@@ -41,6 +41,8 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        builder.WebHost.UseUrls("http://0.0.0.0:5107");
+
         // Use CORS middleware
         app.UseCors("AllowAll");
 
