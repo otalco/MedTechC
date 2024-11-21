@@ -16,7 +16,7 @@ public class Program
 
         // Configure DbContext to use SQL Server
         builder.Services.AddDbContext<MedTechDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
         builder.Services.AddScoped<IProntuarioRepository, ProntuarioRepository>();
@@ -33,6 +33,13 @@ public class Program
         });
 
         var app = builder.Build();
+
+        // Apply migrations automatically
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<MedTechDbContext>();
+            dbContext.Database.Migrate();
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

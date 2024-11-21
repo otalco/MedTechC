@@ -1,6 +1,24 @@
 @MedTechC_HostAddress = http://localhost:5107
 
+### Requisição GET para obter previsões do tempo
 GET {{MedTechC_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+### Requisição POST para criar um novo item (exemplo)
+POST {{MedTechC_HostAddress}}/api/items
+Content-Type: application/json
+
+{
+  "name": "Novo Item",
+  "description": "Descrição do novo item"
+}
+
+###
+
+### Requisição GET para listar todos os itens (exemplo)
+GET {{MedTechC_HostAddress}}/api/items
 Accept: application/json
 
 ###
